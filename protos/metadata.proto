@@ -1,0 +1,44 @@
+// File metadata (for files contained within a sear archive)
+
+syntax = "proto3";
+package sear.metadata;
+
+import "timestamp.proto";
+
+// File owner
+message Owner {
+    // Name of the owning user
+    string username = 1;
+
+    // Name of the owning group
+    string groupname = 2;
+
+    // TODO: support for using UIDs/GIDs instead of names?
+}
+
+// File permissions
+message Permissions {
+    // UNIX mode
+    uint32 mode = 1;
+
+    // POSIX ACLs
+    repeated string posix_acls = 2;
+
+    // SELinux context labels
+    repeated string selinux_labels = 3;
+}
+
+// File attributes
+message Attributes {
+    // Date when the file was created
+    sear.timestamp.TAI64N created_at = 1;
+
+    // Date when the file was last modified
+    sear.timestamp.TAI64N modified_at = 2;
+
+    // Media type (a.k.a. MIME type)
+    string content_type = 3;
+
+    // Extended attributes
+    repeated string xattr = 4;
+}
