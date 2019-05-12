@@ -1,5 +1,11 @@
 # sear: signed/encrypted archive 📦<a href="https://www.iqlusion.io"><img src="https://storage.googleapis.com/iqlusion-prod-web-assets/img/logo/iqlusion-rings-sm.png" alt="iqlusion" width="24" height="24"></a>
 
+[![Crate][crate-img]][crate-link]
+[![Docs][docs-img]][docs-link]
+[![Build Status][build-image]][build-link]
+[![Apache 2.0 License][license-image]][license-link]
+[![Gitter Chat][gitter-image]][gitter-link]
+
 An always-encrypted *tar*-like file archive format with support for Ed25519
 digital signatures.
 
@@ -17,9 +23,12 @@ of complicated features (web-of-trust security model, messaging/encrypted email
 support), `sear` is laser-focused on encrypting and authenticating (via
 digital signatures) archives of files.
 
-## Installation Requirements
+## Installation
 
-- Rust 1.31+
+NOTE: `sear` is presently vaporware, so this won't do a whole lot yet.
+
+1. [Install Rust] (1.31+)
+2. Run `cargo install sear`
 
 ## File Format
 
@@ -120,6 +129,33 @@ format:
 - **Password:** generate and store a random salt, and use it together with
   the password as input to Argon2i to derive a password.
 
+## License
+
+Copyright © 2019 iqlusion
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+[crate-img]: https://img.shields.io/crates/v/sear.svg
+[crate-link]: https://crates.io/crates/sear
+[docs-img]: https://docs.rs/sear/badge.svg
+[docs-link]: https://docs.rs/sear/
+[build-image]: https://travis-ci.com/iqlusioninc/sear.svg?branch=develop
+[build-link]: https://travis-ci.com/iqlusioninc/sear
+[license-image]: https://img.shields.io/badge/license-Apache2.0.svg
+[license-link]: https://github.com/iqlusioninc/sear/blob/develop/LICENSE
+[gitter-image]: https://badges.gitter.im/iqlusioninc/sear.svg
+[gitter-link]: https://gitter.im/iqlusioninc/community
+[Install Rust]: https://www.rust-lang.org/en-US/install.html
 [Google Tink]: https://github.com/google/tink
 [HKDF]: https://en.wikipedia.org/wiki/HKDF
 [AES-GCM]: https://en.wikipedia.org/wiki/Galois/Counter_Mode
