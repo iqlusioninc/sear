@@ -1,0 +1,31 @@
+language: rust
+rust: stable
+os: linux
+cache: cargo
+
+install:
+  - rustup component add rustfmt
+  - rustup component add clippy
+
+branches:
+  only:
+    - develop
+
+matrix:
+  include:
+    - name: rustfmt
+      script:
+        - cargo fmt -- --check
+    - name: clippy
+      script:
+        - cargo clippy
+    - name: build
+      script:
+        - cargo build --release
+    - name: test
+      script:
+        - cargo test --release
+    - name: test (1.31.0)
+      rust: 1.31.0
+      script:
+        - cargo test --release
