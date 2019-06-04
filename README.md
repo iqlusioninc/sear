@@ -6,6 +6,7 @@
 ![Rust 1.35+][rustc-image]
 [![forbid(unsafe_code)][unsafe-image]][unsafe-link]
 [![Build Status][build-image]][build-link]
+[![Appveyor Status][appveyor-image]][appveyor-link]
 [![Gitter Chat][gitter-image]][gitter-link]
 
 An always-encrypted *tar*-like file archive format with support for Ed25519
@@ -172,6 +173,8 @@ without any additional terms or conditions.
 [unsafe-link]: https://internals.rust-lang.org/t/disabling-unsafe-by-default/7988
 [build-image]: https://travis-ci.com/iqlusioninc/sear.svg?branch=develop
 [build-link]: https://travis-ci.com/iqlusioninc/sear
+[appveyor-image]: https://ci.appveyor.com/api/projects/status/k9vd433ks173fqf2?svg=true
+[appveyor-link]: https://ci.appveyor.com/project/tony-iqlusion/sear
 [gitter-image]: https://badges.gitter.im/iqlusioninc/sear.svg
 [gitter-link]: https://gitter.im/iqlusioninc/community
 
@@ -187,4 +190,4 @@ without any additional terms or conditions.
 [Merkle tree]: https://en.wikipedia.org/wiki/Merkle_tree
 [YubiHSM2]: https://developers.yubico.com/YubiHSM2/
 [cc]: https://contributor-covenant.org
-[CODE_OF_CONDUCT.md]: https://github.com/iqlusioninc/sear/blob/master/CODE_OF_CONDUCT.md
+[CODE_OF_CONDUCT.md]: https://github.com/iqlusioninc/sear/blob/develop/CODE_OF_CONDUCT.md
