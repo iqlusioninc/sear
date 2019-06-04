@@ -1,4 +1,4 @@
-//! sear: CLI utility
+//! sear: signed/encrypted archive command line utility
 
 #![deny(
     warnings,
