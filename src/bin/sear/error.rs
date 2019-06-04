@@ -1,4 +1,4 @@
-//! Error types
+//! `sear` CLI application error types
 
 use abscissa::{err, Error};
 use failure::Fail;
