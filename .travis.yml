@@ -35,13 +35,15 @@ matrix:
       rust: stable
       os: linux
       script:
-        - cargo build --no-default-features --lib
+        - cargo build --no-default-features --features=std --lib
         - cargo build --release
     - name: test (rustc 1.35.0)
       rust: 1.35.0
       script:
         - cargo test --release
     - name: test (rustc stable)
+      rust: stable
+      os: linux
       script:
         - cargo test --release
     - name: test (rustc stable/macos)

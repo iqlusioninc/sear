@@ -37,6 +37,6 @@ prost-build = "0.5"
 tempfile = "3"
 
 [features]
-cli = ["abscissa", "gumdrop", "lazy_static", "keyring", "toml"]
-default = ["cli"]
-keyring = ["serde"]
+cli = ["abscissa", "gumdrop", "lazy_static", "serde", "toml"]
+default = ["cli", "std"]
+std = []
