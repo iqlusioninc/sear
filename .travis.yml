@@ -1,31 +1,56 @@
 language: rust
-rust: stable
-os: linux
 cache: cargo
 
 install:
   - rustup component add rustfmt
   - rustup component add clippy
+  - command -v cargo-audit >/dev/null 2>&1 || cargo install cargo-audit
 
 branches:
   only:
     - develop
 
+env:
+  global:
+    - RUST_BACKTRACE=1
+
 matrix:
   include:
+    - name: audit
+      rust: stable
+      os: linux
+      script:
+        - cargo audit
     - name: rustfmt
+      rust: stable
+      os: linux
       script:
         - cargo fmt -- --check
     - name: clippy
+      rust: stable
+      os: linux
       script:
         - cargo clippy
     - name: build
+      rust: stable
+      os: linux
       script:
+        - cargo build --no-default-features --lib
         - cargo build --release
-    - name: test
+    - name: test (rustc 1.35.0)
+      rust: 1.35.0
       script:
         - cargo test --release
-    - name: test (1.31.0)
-      rust: 1.31.0
+    - name: test (rustc stable)
       script:
         - cargo test --release
+    - name: test (rustc stable/macos)
+      rust: stable
+      os: osx
+      script:
+        - cargo test --release
+    - name: doc
+      rust: stable
+      os: linux
+      script:
+        - cargo doc
