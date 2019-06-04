@@ -14,3 +14,5 @@
     unused_qualifications
 )]
 #![forbid(unsafe_code)]
+
+pub mod protos;

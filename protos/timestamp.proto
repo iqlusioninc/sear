@@ -1,0 +1,12 @@
+// TAI64 timestamps used by sear
+
+syntax = "proto3";
+package sear.timestamp;
+
+// TAI64N timestamps (<https://cr.yp.to/libtai/tai64.html#tai64n>)
+// These include a TAI64 timestamp providing 1-second precision along with
+// an additional 32-bit component for nanoseconds
+message TAI64N {
+    // 96-bit TAI64N timestamp value
+    bytes value = 1;
+}

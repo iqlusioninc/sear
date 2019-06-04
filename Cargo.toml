@@ -9,6 +9,7 @@ keywords    = ["archive", "encryption", "security"]
 edition     = "2018"
 
 [dependencies]
+bytes = "0.4"
 chrono = "0.4"
 cryptouri = "0.1"
 failure = "0.1"

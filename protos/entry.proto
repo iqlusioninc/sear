@@ -1,0 +1,47 @@
+// Entries within .sear archive filesds
+
+syntax = "proto3";
+package sear.entry;
+
+import "metadata.proto";
+
+// Entry within a .sear archive file
+message Entry {
+    // Path to the file (absolute or relative, with '.' and '..' disallowed)
+    string path = 1;
+
+    // Length of the file in bytes
+    uint64 length = 2;
+
+    // File owner
+    sear.metadata.Owner owner = 3;
+
+    // File permissions
+    sear.metadata.Permissions permissions = 4;
+
+    // File attributes
+    sear.metadata.Attributes attributes = 5;
+
+    // Kinds of entries
+    oneof kind {
+        // Regular files
+        FileEntry file = 10;
+
+        // Hard or symbolic links
+        LinkEntry link = 11;
+
+        // TODO: character devices, block devices, directories, FIFOs, etc.
+    }
+}
+
+// Regular file
+message FileEntry {}
+
+// Hard or symbolic link
+message LinkEntry {
+    // Is this a symbolic link? (otherwise a hard link)
+    bool symbolic = 1;
+
+    // Path to linked file/directory
+    string link_path = 2;
+}

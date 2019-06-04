@@ -186,7 +186,7 @@ without any additional terms or conditions.
 [AES-GCM]: https://en.wikipedia.org/wiki/Galois/Counter_Mode
 [STREAM]: https://web.cs.ucdavis.edu/~rogaway/papers/oae.pdf
 [Protocol Buffers]: https://developers.google.com/protocol-buffers/
-[CryptoURI]: https://github.com/cryptouri/cryptouri.rs/blob/master/README.md
+[CryptoURI]: https://github.com/cryptouri/cryptouri.rs/blob/develop/README.md
 [Merkle tree]: https://en.wikipedia.org/wiki/Merkle_tree
 [YubiHSM2]: https://developers.yubico.com/YubiHSM2/
 [cc]: https://contributor-covenant.org
