@@ -1,4 +1,4 @@
-//! Protocol Buffers used by `sear`
+//! Protocol Buffers which describe the structure of sear's archive format
 
 #![allow(missing_docs, unused_qualifications)]
 

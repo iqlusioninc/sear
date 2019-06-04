@@ -1,33 +1,13 @@
-//! sear: CLI application (built on the Abscissa framework)
+//! `sear`: CLI application (built on the Abscissa framework)
 
-use crate::{commands::SearCommand, config::SearConfig};
-use abscissa::application;
-use abscissa::{Application, EntryPoint, FrameworkError, LoggingConfig, StandardPaths};
+use crate::{command::SearCommand, config::SearConfig};
+use abscissa::{application, Application, FrameworkError, LoggingConfig, StandardPaths};
 use lazy_static::lazy_static;
 
 lazy_static! {
     /// Application state
     pub static ref APPLICATION: application::Lock<SearApplication> = application::Lock::default();
 }
-
-// Obtain a read-only (multi-reader) lock on the application state.
-//
-// Panics if the application state has not been initialized.
-// pub fn app_reader() -> application::lock::Reader<SearApplication> {
-//    APPLICATION.read()
-// }
-
-// Obtain an exclusive mutable lock on the application state.
-// pub fn app_writer() -> application::lock::Writer<SearApplication> {
-//    APPLICATION.write()
-// }
-
-// Obtain a read-only (multi-reader) lock on the application configuration.
-//
-// Panics if the application configuration has not been loaded.
-// pub fn app_config() -> config::Reader<SearApplication> {
-//    config::Reader::new(&APPLICATION)
-// }
 
 /// `sear` application
 #[derive(Debug)]
@@ -50,7 +30,7 @@ impl Default for SearApplication {
 
 impl Application for SearApplication {
     /// `sear` entrypoint command
-    type Cmd = EntryPoint<SearCommand>;
+    type Cmd = SearCommand;
 
     /// Configuration.
     type Cfg = SearConfig;
@@ -91,7 +71,7 @@ impl Application for SearApplication {
     }
 
     /// Get logging configuration from command-line options
-    fn logging_config(&self, command: &EntryPoint<SearCommand>) -> LoggingConfig {
+    fn logging_config(&self, command: &SearCommand) -> LoggingConfig {
         if command.verbose {
             LoggingConfig::verbose()
         } else {
