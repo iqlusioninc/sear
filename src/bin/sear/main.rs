@@ -11,9 +11,10 @@
 #![forbid(unsafe_code)]
 
 mod application;
-mod commands;
+mod command;
 mod config;
 mod error;
+mod operation;
 mod prelude;
 
 use application::APPLICATION;

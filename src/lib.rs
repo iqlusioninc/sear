@@ -23,6 +23,7 @@ compile_error!("no_std is not yet supported (will require alloc crate)");
 #[macro_use]
 extern crate std;
 
-pub mod error;
-pub mod prelude;
-pub mod protos;
+mod error;
+mod prelude;
+
+pub use self::error::{Error, ErrorKind};
