@@ -1,4 +1,4 @@
-# sear: signed/encrypted archive 📦<a href="https://www.iqlusion.io"><img src="https://storage.googleapis.com/iqlusion-prod-web-assets/img/logo/iqlusion-rings-sm.png" alt="iqlusion" width="24" height="24"></a>
+# sear: signed/encrypted archive 📦<a href="https://www.iqlusion.io"><img src="https://storage.googleapis.com/iqlusion-production-web/img/logo/iqlusion-rings-sm.png" alt="iqlusion" width="24" height="24"></a>
 
 [![Crate][crate-img]][crate-link]
 [![Docs][docs-img]][docs-link]
