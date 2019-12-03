@@ -3,8 +3,8 @@
 mod create;
 
 use self::create::CreateOp;
-use crate::command::SearCommand;
-use abscissa::Runnable;
+use crate::command::SearCmd;
+use abscissa_core::Runnable;
 use failure::{bail, Error};
 use std::convert::TryFrom;
 
@@ -15,12 +15,12 @@ pub enum Operation {
     Create(CreateOp),
 }
 
-impl<'a> TryFrom<&'a SearCommand> for Operation {
+impl<'a> TryFrom<&'a SearCmd> for Operation {
     // TODO(tarcieri): use `crate::error::Error`
     type Error = Error;
 
     /// Parse command-line arguments into the appropriate operation
-    fn try_from(cmd: &SearCommand) -> Result<Self, Error> {
+    fn try_from(cmd: &SearCmd) -> Result<Self, Error> {
         if cmd.create && cmd.extract {
             bail!("-c and -x are orthogonal (pick one)");
         }

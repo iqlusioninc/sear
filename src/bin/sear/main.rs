@@ -20,5 +20,5 @@ mod prelude;
 use application::APPLICATION;
 
 fn main() {
-    abscissa::boot(&APPLICATION);
+    abscissa_core::boot(&APPLICATION);
 }

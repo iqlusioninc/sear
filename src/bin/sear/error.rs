@@ -1,19 +1,32 @@
 //! `sear` CLI application error types
 
-use abscissa::err;
+use abscissa_core::err;
 use failure::Fail;
-use std::{fmt, io};
+use std::{fmt, io, ops::Deref};
 
 /// Error type
 #[derive(Debug)]
-pub struct Error(abscissa::Error<ErrorKind>);
+pub struct Error(abscissa_core::Error<ErrorKind>);
 
 /// Kinds of errors
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Fail)]
 pub enum ErrorKind {
+    /// Error in configuration file
+    #[allow(dead_code)]
+    #[fail(display = "config error")]
+    Config,
+
     /// Input/output error
     #[fail(display = "I/O error")]
     Io,
+}
+
+impl Deref for Error {
+    type Target = abscissa_core::Error<ErrorKind>;
+
+    fn deref(&self) -> &abscissa_core::Error<ErrorKind> {
+        &self.0
+    }
 }
 
 impl fmt::Display for Error {
@@ -22,8 +35,8 @@ impl fmt::Display for Error {
     }
 }
 
-impl From<abscissa::Error<ErrorKind>> for Error {
-    fn from(other: abscissa::Error<ErrorKind>) -> Self {
+impl From<abscissa_core::Error<ErrorKind>> for Error {
+    fn from(other: abscissa_core::Error<ErrorKind>) -> Self {
         Error(other)
     }
 }
