@@ -1,7 +1,7 @@
 //! Create a new `.sear` archive
 
-use crate::command::SearCommand;
-use abscissa::Runnable;
+use crate::command::SearCmd;
+use abscissa_core::Runnable;
 use failure::{bail, Error};
 use std::path::PathBuf;
 
@@ -26,7 +26,7 @@ pub struct CreateOp {
 
 impl CreateOp {
     /// Initialize a create operation from command-line arguments
-    pub fn new(cmd: &SearCommand) -> Result<Self, Error> {
+    pub fn new(cmd: &SearCmd) -> Result<Self, Error> {
         let archive = match cmd.archive {
             Some(ref path) => PathBuf::from(path),
             // TODO(tarcieri): use `crate::error::Error`

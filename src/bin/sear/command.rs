@@ -1,12 +1,12 @@
 //! `sear`: CLI option parser
 
 use crate::{config::SearConfig, operation::Operation};
-use abscissa::{Command, Configurable, Options, Runnable};
+use abscissa_core::{Command, Configurable, Options, Runnable};
 use std::{convert::TryFrom, path::PathBuf, process::exit};
 
 /// sear command line option parser
 #[derive(Command, Debug, Options)]
-pub struct SearCommand {
+pub struct SearCmd {
     /// Input/output archive file
     #[options(short = "f")]
     pub archive: Option<String>,
@@ -52,7 +52,7 @@ pub struct SearCommand {
     pub files: Vec<String>,
 }
 
-impl Default for SearCommand {
+impl Default for SearCmd {
     fn default() -> Self {
         Self {
             archive: None,
@@ -70,14 +70,14 @@ impl Default for SearCommand {
     }
 }
 
-impl Configurable<SearConfig> for SearCommand {
+impl Configurable<SearConfig> for SearCmd {
     fn config_path(&self) -> Option<PathBuf> {
         // TODO(tarcieri): configuration support
         None
     }
 }
 
-impl Runnable for SearCommand {
+impl Runnable for SearCmd {
     fn run(&self) {
         Operation::try_from(self)
             .unwrap_or_else(|e| {

@@ -1,17 +1,41 @@
-//! `sear`: CLI application (built on the Abscissa framework)
+//! Sear Abscissa Application
 
-use crate::{command::SearCommand, config::SearConfig};
-use abscissa::{application, Application, FrameworkError, LoggingConfig, StandardPaths};
+use crate::{command::SearCmd, config::SearConfig};
+use abscissa_core::{
+    application, config, logging, Application, EntryPoint, FrameworkError, StandardPaths,
+};
 use lazy_static::lazy_static;
 
 lazy_static! {
     /// Application state
-    pub static ref APPLICATION: application::Lock<SearApplication> = application::Lock::default();
+    pub static ref APPLICATION: application::Lock<SearApp> = application::Lock::default();
 }
 
-/// `sear` application
+/// Obtain a read-only (multi-reader) lock on the application state.
+///
+/// Panics if the application state has not been initialized.
+#[allow(dead_code)]
+pub fn app_reader() -> application::lock::Reader<SearApp> {
+    APPLICATION.read()
+}
+
+/// Obtain an exclusive mutable lock on the application state.
+#[allow(dead_code)]
+pub fn app_writer() -> application::lock::Writer<SearApp> {
+    APPLICATION.write()
+}
+
+/// Obtain a read-only (multi-reader) lock on the application configuration.
+///
+/// Panics if the application configuration has not been loaded.
+#[allow(dead_code)]
+pub fn app_config() -> config::Reader<SearApp> {
+    config::Reader::new(&APPLICATION)
+}
+
+/// Sear Application
 #[derive(Debug)]
-pub struct SearApplication {
+pub struct SearApp {
     /// Application configuration.
     config: Option<SearConfig>,
 
@@ -19,7 +43,11 @@ pub struct SearApplication {
     state: application::State<Self>,
 }
 
-impl Default for SearApplication {
+/// Initialize a new application instance.
+///
+/// By default no configuration is loaded, and the framework state is
+/// initialized to a default, empty state (no components, threads, etc).
+impl Default for SearApp {
     fn default() -> Self {
         Self {
             config: None,
@@ -28,19 +56,19 @@ impl Default for SearApplication {
     }
 }
 
-impl Application for SearApplication {
-    /// `sear` entrypoint command
-    type Cmd = SearCommand;
+impl Application for SearApp {
+    /// Entrypoint command for this application.
+    type Cmd = EntryPoint<SearCmd>;
 
-    /// Configuration.
+    /// Application configuration.
     type Cfg = SearConfig;
 
     /// Paths to resources within the application.
     type Paths = StandardPaths;
 
     /// Accessor for application configuration.
-    fn config(&self) -> Option<&SearConfig> {
-        self.config.as_ref()
+    fn config(&self) -> &SearConfig {
+        self.config.as_ref().expect("config not loaded")
     }
 
     /// Borrow the application state immutably.
@@ -54,28 +82,33 @@ impl Application for SearApplication {
     }
 
     /// Register all components used by this application.
+    ///
+    /// If you would like to add additional components to your application
+    /// beyond the default ones provided by the framework, this is the place
+    /// to do so.
     fn register_components(&mut self, command: &Self::Cmd) -> Result<(), FrameworkError> {
         let components = self.framework_components(command)?;
         self.state.components.register(components)
     }
 
     /// Post-configuration lifecycle callback.
-    fn after_config(&mut self, config: Option<Self::Cfg>) -> Result<(), FrameworkError> {
-        // Provide configuration to all component `after_config()` handlers
-        for component in self.state.components.iter_mut() {
-            component.after_config(config.as_ref())?;
-        }
-
-        self.config = config;
+    ///
+    /// Called regardless of whether config is loaded to indicate this is the
+    /// time in app lifecycle when configuration would be loaded if
+    /// possible.
+    fn after_config(&mut self, config: Self::Cfg) -> Result<(), FrameworkError> {
+        // Configure components
+        self.state.components.after_config(&config)?;
+        self.config = Some(config);
         Ok(())
     }
 
     /// Get logging configuration from command-line options
-    fn logging_config(&self, command: &SearCommand) -> LoggingConfig {
+    fn logging_config(&self, command: &EntryPoint<SearCmd>) -> logging::Config {
         if command.verbose {
-            LoggingConfig::verbose()
+            logging::Config::verbose()
         } else {
-            LoggingConfig::default()
+            logging::Config::default()
         }
     }
 }
