@@ -11,7 +11,7 @@ edition     = "2018"
 [dependencies]
 bytes = "0.5"
 chrono = "0.4"
-cryptouri = "0.1"
+cryptouri = "0.2"
 failure = "0.1"
 gumdrop = { version = "0.7", optional = true }
 hkdf = "0.8"
