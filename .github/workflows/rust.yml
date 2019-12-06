@@ -1,0 +1,152 @@
+# Based on https://github.com/actions-rs/meta/blob/master/recipes/quickstart.md
+
+on:
+  pull_request: {}
+  push:
+    branches: develop
+
+name: Rust
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install libpcsclite-dev
+        run: sudo apt-get install libpcsclite-dev
+
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
+  # Need to install `libpscslite-dev` on Linux
+  linux:
+    name: Test Suite
+    strategy:
+      matrix:
+        toolchain:
+          - 1.39.0
+          - stable
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+
+      - name: Install libpcsclite-dev
+        run: sudo apt-get install libpcsclite-dev
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTFLAGS: -D warnings
+        with:
+          command: test
+          args: --all --release
+
+      - name: Run cargo build --all-features
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTFLAGS: -D warnings
+        with:
+          command: build
+          args: --all --all-features
+
+  test:
+    name: Test Suite
+    strategy:
+      matrix:
+        platform:
+          - macos-latest
+          - windows-latest
+        toolchain:
+          - 1.39.0
+          - stable
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTFLAGS: -D warnings
+        with:
+          command: test
+          args: --all --release
+
+      - name: Run cargo build --all-features
+        uses: actions-rs/cargo@v1
+        env:
+          RUSTFLAGS: -D warnings
+        with:
+          command: build
+          args: --all --all-features
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install rustfmt
+        run: rustup component add rustfmt
+
+      - name: Run cargo fmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install libpcsclite-dev
+        run: sudo apt-get install libpcsclite-dev
+
+      - name: Install clippy
+        run: rustup component add clippy
+
+      - name: Run cargo clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: --all --all-features -- -D warnings
