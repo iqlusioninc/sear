@@ -3,10 +3,9 @@
 [![Crate][crate-img]][crate-link]
 [![Docs][docs-img]][docs-link]
 [![Apache 2.0 License][license-image]][license-link]
-![Rust 1.35+][rustc-image]
-[![forbid(unsafe_code)][unsafe-image]][unsafe-link]
+![MSRV][msrv-image]
+[![Safety Dance][safety-image]][safety-link]
 [![Build Status][build-image]][build-link]
-[![Appveyor Status][appveyor-image]][appveyor-link]
 [![Gitter Chat][gitter-image]][gitter-link]
 
 An always-encrypted *tar*-like file archive format with support for Ed25519
@@ -30,7 +29,7 @@ digital signatures) archives of files.
 
 NOTE: `sear` is presently vaporware, so this won't do a whole lot yet.
 
-1. [Install Rust] (1.35+)
+1. [Install Rust] (1.36+)
 2. Run `cargo install sear`
 
 ## File Format
@@ -168,13 +167,11 @@ without any additional terms or conditions.
 [docs-link]: https://docs.rs/sear/
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg
 [license-link]: https://github.com/iqlusioninc/sear/blob/develop/LICENSE
-[rustc-image]: https://img.shields.io/badge/rustc-1.35+-blue.svg
-[unsafe-image]: https://img.shields.io/badge/unsafe-forbidden-success.svg
-[unsafe-link]: https://internals.rust-lang.org/t/disabling-unsafe-by-default/7988
-[build-image]: https://travis-ci.com/iqlusioninc/sear.svg?branch=develop
-[build-link]: https://travis-ci.com/iqlusioninc/sear
-[appveyor-image]: https://ci.appveyor.com/api/projects/status/k9vd433ks173fqf2?svg=true
-[appveyor-link]: https://ci.appveyor.com/project/tony-iqlusion/sear
+[msrv-image]: https://img.shields.io/badge/rustc-1.36+-blue.svg
+[safety-image]: https://img.shields.io/badge/unsafe-forbidden-success.svg
+[safety-link]: https://github.com/rust-secure-code/safety-dance/
+[build-image]: https://github.com/iqlusioninc/sear/workflows/Rust/badge.svg?branch=develop&event=push
+[build-link]: https://github.com/iqlusioninc/sear/actions
 [gitter-image]: https://badges.gitter.im/iqlusioninc/sear.svg
 [gitter-link]: https://gitter.im/iqlusioninc/community
 
