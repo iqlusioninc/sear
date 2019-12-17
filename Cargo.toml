@@ -25,7 +25,7 @@ uuid = { version = "0.8", default-features = false }
 zeroize = "1"
 
 [dependencies.abscissa_core]
-version = "0.4"
+version = "0.5"
 optional = true
 
 [build-dependencies]
