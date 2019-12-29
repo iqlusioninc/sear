@@ -3,9 +3,12 @@
 mod create;
 
 use self::create::CreateOp;
-use crate::command::SearCmd;
+use crate::{
+    command::SearCmd,
+    error::{Error, ErrorKind},
+    prelude::*,
+};
 use abscissa_core::Runnable;
-use failure::{bail, Error};
 use std::convert::TryFrom;
 
 /// Operations on `.sear` files parsed from command-line arguments
@@ -15,18 +18,17 @@ pub enum Operation {
     Create(CreateOp),
 }
 
-impl<'a> TryFrom<&'a SearCmd> for Operation {
-    // TODO(tarcieri): use `crate::error::Error`
+impl TryFrom<&SearCmd> for Operation {
     type Error = Error;
 
     /// Parse command-line arguments into the appropriate operation
     fn try_from(cmd: &SearCmd) -> Result<Self, Error> {
         if cmd.create && cmd.extract {
-            bail!("-c and -x are orthogonal (pick one)");
+            fail!(ErrorKind::Argument, "-c and -x are orthogonal (pick one)");
         }
 
         if !cmd.create {
-            bail!("neither -c nor -x specified");
+            fail!(ErrorKind::Argument, "neither -c nor -x specified");
         }
 
         Ok(Operation::Create(CreateOp::new(cmd)?))

@@ -1,8 +1,11 @@
 //! Create a new `.sear` archive
 
-use crate::command::SearCmd;
+use crate::{
+    command::SearCmd,
+    error::{Error, ErrorKind},
+    prelude::*,
+};
 use abscissa_core::Runnable;
-use failure::{bail, Error};
 use std::path::PathBuf;
 
 /// Create a new `.sear` archive
@@ -29,8 +32,7 @@ impl CreateOp {
     pub fn new(cmd: &SearCmd) -> Result<Self, Error> {
         let archive = match cmd.archive {
             Some(ref path) => PathBuf::from(path),
-            // TODO(tarcieri): use `crate::error::Error`
-            None => bail!("no -f option given"),
+            None => fail!(ErrorKind::Argument, "no -f option given"),
         };
 
         let files = cmd.files.iter().map(PathBuf::from).collect();
