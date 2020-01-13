@@ -16,7 +16,7 @@ cryptouri = "0.2"
 gumdrop = { version = "0.7", optional = true }
 hkdf = "0.8"
 lazy_static = { version = "1", optional = true }
-prost = "0.5"
+prost = "0.6"
 serde = { version = "1", features = ["serde_derive"], optional = true }
 sha2 = "0.8"
 tai64 = { version = "3", features = ["chrono"] }
