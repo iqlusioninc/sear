@@ -455,11 +455,11 @@ dependencies = [
 
 [[package]]
 name = "prost"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bytes 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "prost-derive 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "prost-derive 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -473,7 +473,7 @@ dependencies = [
  "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "multimap 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "petgraph 0.4.13 (registry+https://github.com/rust-lang/crates.io-index)",
- "prost 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "prost 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "prost-types 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "tempfile 3.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "which 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -481,7 +481,7 @@ dependencies = [
 
 [[package]]
 name = "prost-derive"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "anyhow 1.0.26 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -497,7 +497,7 @@ version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bytes 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "prost 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "prost 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -600,7 +600,7 @@ dependencies = [
  "gumdrop 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "hkdf 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "prost 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "prost 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "prost-build 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1021,9 +1021,9 @@ dependencies = [
 "checksum petgraph 0.4.13 (registry+https://github.com/rust-lang/crates.io-index)" = "9c3659d1ee90221741f65dd128d9998311b0e40c5d3c23a62445938214abce4f"
 "checksum ppv-lite86 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)" = "74490b50b9fbe561ac330df47c08f3f33073d2d00c150f719147d7c54522fa1b"
 "checksum proc-macro2 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)" = "9c9e470a8dc4aeae2dee2f335e8f533e2d4b347e1434e5671afc49b054592f27"
-"checksum prost 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "51e1bdfe79dfa6df7ed34e50060cea5108e2fc4e6d3230658770720e53cb1874"
+"checksum prost 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)" = "ce49aefe0a6144a45de32927c77bd2859a5f7677b55f220ae5b744e87389c212"
 "checksum prost-build 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "33a7fe588ea94b85bc9dc3471652a9ed71727be3460c8238bca3f0e7280cf1a3"
-"checksum prost-derive 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "4671563225154e373c66c83c9a92468c2e333a355e2ec5abefdbcbf2539e4877"
+"checksum prost-derive 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)" = "537aa19b95acde10a12fec4301466386f757403de4cd4e5b4fa78fb5ecb18f72"
 "checksum prost-types 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "738dd42f98597e4d9ea547b46df0fd17b9a16d2653c959feb32f918cc1d120b0"
 "checksum quote 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "053a8c8bcc71fcce321828dc897a98ab9760bef03a4fc36693c231e5b3216cfe"
 "checksum rand 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)" = "3ae1b169243eaf61759b8475a998f0a385e42042370f3a7dbaf35246eacc8412"
