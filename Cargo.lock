@@ -612,7 +612,7 @@ dependencies = [
  "sha2 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "tai64 3.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "tempfile 3.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "thiserror 1.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror 1.0.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "uuid 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "zeroize 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -771,15 +771,15 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.9"
+version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "thiserror-impl 1.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "thiserror-impl 1.0.10 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.9"
+version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1060,8 +1060,8 @@ dependencies = [
 "checksum tai64 3.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "4014289c3d2b8168880ae86633247e73712fcc579969aff0ca7c5dcd17456b82"
 "checksum tempfile 3.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "7a6e24d9338a0a5be79593e2fa15a648add6138caa803e2d5bc782c371732ca9"
 "checksum termcolor 1.0.5 (registry+https://github.com/rust-lang/crates.io-index)" = "96d6098003bde162e4277c70665bd87c326f5a0c3f3fbfb285787fa482d54e6e"
-"checksum thiserror 1.0.9 (registry+https://github.com/rust-lang/crates.io-index)" = "6f357d1814b33bc2dc221243f8424104bfe72dbe911d5b71b3816a2dff1c977e"
-"checksum thiserror-impl 1.0.9 (registry+https://github.com/rust-lang/crates.io-index)" = "eb2e25d25307eb8436894f727aba8f65d07adf02e5b35a13cebed48bd282bfef"
+"checksum thiserror 1.0.10 (registry+https://github.com/rust-lang/crates.io-index)" = "205684fd018ca14432b12cce6ea3d46763311a571c3d294e71ba3f01adcf1aad"
+"checksum thiserror-impl 1.0.10 (registry+https://github.com/rust-lang/crates.io-index)" = "57e4d2e50ca050ed44fb58309bdce3efa79948f84f9993ad1978de5eebdce5a7"
 "checksum thread_local 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "c6b53e329000edc2b34dbe8545fd20e55a333362d0a321909685a19bd28c3f1b"
 "checksum time 0.1.42 (registry+https://github.com/rust-lang/crates.io-index)" = "db8dcfca086c1143c9270ac42a2bbd8a7ee477b78ac8e45b19abfb0cbede4b6f"
 "checksum toml 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)" = "01d1404644c8b12b16bfcffa4322403a91a451584daaaa7c28d3152e6cbc98cf"
