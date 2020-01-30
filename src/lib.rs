@@ -5,25 +5,16 @@
 //! The command-line utility functionality is contained within the
 //! `src/bin/sear` subdirectory.
 
-#![no_std]
-#![deny(
-    warnings,
-    missing_docs,
-    trivial_casts,
-    trivial_numeric_casts,
-    unused_import_braces,
-    unused_qualifications
-)]
+#![doc(html_root_url = "https://docs.rs/sear/0.0.0")]
 #![forbid(unsafe_code)]
+#![warn(missing_docs, rust_2018_idioms, unused_qualifications)]
 
-#[cfg(not(feature = "std"))]
-compile_error!("no_std is not yet supported (will require alloc crate)");
-
-#[cfg(feature = "std")]
 #[macro_use]
-extern crate std;
+pub mod error;
 
-mod error;
-mod prelude;
+pub mod builder;
+pub mod crypto;
+pub mod keyring;
+pub mod protos;
 
-pub use self::error::{Error, ErrorKind};
+pub use self::{builder::Builder, error::Error, keyring::KeyRing};

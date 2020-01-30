@@ -9,19 +9,21 @@ keywords    = ["archive", "encryption", "security"]
 edition     = "2018"
 
 [dependencies]
-abscissa_core = { version = "0.5", optional = true }
+abscissa_core = { version = "0.5.2", optional = true }
+aead = "0.2"
+aes-gcm = "0.3"
+anomaly = "0.1"
 bytes = "0.5"
+chacha20poly1305 = "0.3"
 chrono = "0.4"
-cryptouri = "0.2"
+cryptouri = "0.3"
 gumdrop = { version = "0.7", optional = true }
 hkdf = "0.8"
-lazy_static = { version = "1", optional = true }
 prost = "0.6"
 serde = { version = "1", features = ["serde_derive"], optional = true }
 sha2 = "0.8"
 tai64 = { version = "3", features = ["chrono"] }
 thiserror = "1"
-toml = { version  = "0.5", optional = true }
 uuid = { version = "0.8", default-features = false }
 zeroize = "1"
 
@@ -32,6 +34,5 @@ prost-build = "0.6"
 tempfile = "3"
 
 [features]
-cli = ["abscissa_core", "gumdrop", "serde", "toml"]
-default = ["cli", "std"]
-std = []
+default = ["cli"]
+cli = ["abscissa_core", "gumdrop", "serde"]

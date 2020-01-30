@@ -1,7 +1,7 @@
 //! `sear`: CLI option parser
 
-use crate::{config::SearConfig, operation::Operation};
-use abscissa_core::{Command, Configurable, Options, Runnable};
+use crate::{config::SearConfig, error::Error, op::Op, prelude::*};
+use abscissa_core::{command::Usage, Command, Configurable, Options, Runnable};
 use std::{convert::TryFrom, path::PathBuf, process::exit};
 
 /// sear command line option parser
@@ -79,11 +79,15 @@ impl Configurable<SearConfig> for SearCmd {
 
 impl Runnable for SearCmd {
     fn run(&self) {
-        Operation::try_from(self)
-            .unwrap_or_else(|e| {
-                eprintln!("*** ERROR: {}", e);
-                exit(1);
-            })
-            .run();
+        Op::try_from(self).unwrap_or_else(print_error_message).run();
     }
+}
+
+/// Print an error message
+fn print_error_message(err: Error) -> Op {
+    status_err!("{}", err);
+    Usage::for_command::<SearCmd>()
+        .print_subcommand(&[])
+        .unwrap();
+    exit(1);
 }

@@ -1,9 +1,9 @@
-//! Sear Abscissa Application
+//! `sear`: CLI application (built on the Abscissa framework)
 
 use crate::{command::SearCmd, config::SearConfig};
 use abscissa_core::{
     application::{self, AppCell},
-    config, trace, Application, EntryPoint, FrameworkError, StandardPaths,
+    trace, Application, FrameworkError, StandardPaths,
 };
 
 /// Application state
@@ -27,11 +27,11 @@ pub fn app_writer() -> application::lock::Writer<SearApp> {
 ///
 /// Panics if the application configuration has not been loaded.
 #[allow(dead_code)]
-pub fn app_config() -> config::Reader<SearApp> {
-    config::Reader::new(&APPLICATION)
+pub fn app_config() -> abscissa_core::config::Reader<SearApp> {
+    abscissa_core::config::Reader::new(&APPLICATION)
 }
 
-/// Sear Application
+/// `sear` application
 #[derive(Debug)]
 pub struct SearApp {
     /// Application configuration.
@@ -41,10 +41,6 @@ pub struct SearApp {
     state: application::State<Self>,
 }
 
-/// Initialize a new application instance.
-///
-/// By default no configuration is loaded, and the framework state is
-/// initialized to a default, empty state (no components, threads, etc).
 impl Default for SearApp {
     fn default() -> Self {
         Self {
@@ -55,10 +51,10 @@ impl Default for SearApp {
 }
 
 impl Application for SearApp {
-    /// Entrypoint command for this application.
-    type Cmd = EntryPoint<SearCmd>;
+    /// `sear` entrypoint command
+    type Cmd = SearCmd;
 
-    /// Application configuration.
+    /// Configuration.
     type Cfg = SearConfig;
 
     /// Paths to resources within the application.
@@ -80,29 +76,20 @@ impl Application for SearApp {
     }
 
     /// Register all components used by this application.
-    ///
-    /// If you would like to add additional components to your application
-    /// beyond the default ones provided by the framework, this is the place
-    /// to do so.
     fn register_components(&mut self, command: &Self::Cmd) -> Result<(), FrameworkError> {
         let components = self.framework_components(command)?;
         self.state.components.register(components)
     }
 
     /// Post-configuration lifecycle callback.
-    ///
-    /// Called regardless of whether config is loaded to indicate this is the
-    /// time in app lifecycle when configuration would be loaded if
-    /// possible.
     fn after_config(&mut self, config: Self::Cfg) -> Result<(), FrameworkError> {
-        // Configure components
         self.state.components.after_config(&config)?;
         self.config = Some(config);
         Ok(())
     }
 
     /// Get tracing configuration from command-line options
-    fn tracing_config(&self, command: &EntryPoint<SearCmd>) -> trace::Config {
+    fn tracing_config(&self, command: &SearCmd) -> trace::Config {
         if command.verbose {
             trace::Config::verbose()
         } else {
