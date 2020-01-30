@@ -1,5 +1,6 @@
 //! Archiving operations (parsed from command-line arguments)
 
+mod chdir;
 mod create;
 
 use self::create::CreateOp;
@@ -10,15 +11,16 @@ use crate::{
 };
 use abscissa_core::Runnable;
 use std::convert::TryFrom;
+use std::process::exit;
 
 /// Operations on `.sear` files parsed from command-line arguments
-#[derive(Debug, Runnable)]
-pub enum Operation {
+#[derive(Debug)]
+pub enum Op {
     /// Create a new `.sear` file
     Create(CreateOp),
 }
 
-impl TryFrom<&SearCmd> for Operation {
+impl TryFrom<&SearCmd> for Op {
     type Error = Error;
 
     /// Parse command-line arguments into the appropriate operation
@@ -31,6 +33,19 @@ impl TryFrom<&SearCmd> for Operation {
             fail!(ErrorKind::Argument, "neither -c nor -x specified");
         }
 
-        Ok(Operation::Create(CreateOp::new(cmd)?))
+        Ok(Op::Create(CreateOp::new(cmd)?))
+    }
+}
+
+impl Runnable for Op {
+    fn run(&self) {
+        let result = match self {
+            Op::Create(create_op) => create_op.perform(),
+        };
+
+        if let Err(e) = result {
+            status_err!("{}", e);
+            exit(1);
+        }
     }
 }

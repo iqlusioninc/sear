@@ -67,3 +67,10 @@ impl From<io::Error> for Error {
         ErrorKind::Io.context(err).into()
     }
 }
+
+impl From<sear::Error> for Error {
+    fn from(err: sear::Error) -> Self {
+        // TODO(tarcieri): better map variants?
+        ErrorKind::Io.context(err).into()
+    }
+}

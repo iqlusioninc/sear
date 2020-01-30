@@ -1,20 +1,13 @@
 //! sear: signed/encrypted archive command line utility
 
-#![deny(
-    warnings,
-    missing_docs,
-    trivial_casts,
-    trivial_numeric_casts,
-    unused_import_braces,
-    unused_qualifications
-)]
 #![forbid(unsafe_code)]
+#![warn(missing_docs, rust_2018_idioms, unused_qualifications)]
 
 mod application;
 mod command;
 mod config;
 mod error;
-mod operation;
+mod op;
 mod prelude;
 
 use application::APPLICATION;
