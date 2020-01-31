@@ -15,6 +15,10 @@ pub enum ErrorKind {
     #[error("invalid argument")]
     Argument,
 
+    /// Error occurred while building an archive
+    #[error("couldn't make archive")]
+    Builder,
+
     /// Failure in a cryptographic primitive
     #[error("crypto failure")]
     Crypto,
@@ -84,5 +88,11 @@ impl From<cryptouri::Error> for Error {
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Self {
         ErrorKind::Io.context(err).into()
+    }
+}
+
+impl From<prost::EncodeError> for Error {
+    fn from(err: prost::EncodeError) -> Self {
+        ErrorKind::Builder.context(err).into()
     }
 }

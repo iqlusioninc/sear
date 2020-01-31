@@ -1,0 +1,13 @@
+// Footers (encrypted and plaintext) for `.sear` archive files
+
+syntax = "proto3";
+package sear.footer;
+
+// Footer for .sear archives
+message Footer {
+    // Size of metadata in bytes (if stored in the footer)
+    uint64 metadata_length = 1;
+
+    // Digital signature over the archive (in CryptoURI format; optional)
+    string signature = 2;
+}

@@ -4,12 +4,13 @@ use super::chdir::Chdir;
 use crate::{
     command::SearCmd,
     error::{Error, ErrorKind},
+    formatter,
     prelude::*,
 };
-use sear::{protos::entry::Entry, Builder, KeyRing};
+use sear::{protos::Entry, Builder, KeyRing};
 use std::{
     fs::{File, OpenOptions},
-    path::PathBuf,
+    path::{Path, PathBuf},
     process::exit,
 };
 
@@ -33,6 +34,9 @@ pub struct CreateOp {
 
     /// Preserve file permissions
     pub preserve_permissions: bool,
+
+    /// Enable verbose mode (i.e. print filenames)
+    pub verbose: bool,
 }
 
 impl CreateOp {
@@ -59,6 +63,7 @@ impl CreateOp {
             files,
             preserve_pathnames: args.preserve_pathnames,
             preserve_permissions: args.preserve_permissions,
+            verbose: args.verbose,
         })
     }
 
@@ -66,12 +71,6 @@ impl CreateOp {
     pub fn perform(&self) -> Result<(), Error> {
         assert!(!self.preserve_pathnames, "-P option unsupported");
         assert!(!self.preserve_permissions, "-p option unsupported");
-
-        let archive = File::create(&self.archive)?;
-
-        // Change to the specified directory if one has been configured.
-        // Note this intentionally happens AFTER we have created the output file.
-        self.chdir.perform()?;
 
         let symmetric_key = self
             .keyring
@@ -82,19 +81,39 @@ impl CreateOp {
             })
             .clone();
 
-        let mut builder = Builder::new(archive, symmetric_key);
+        let archive = File::create(&self.archive)?;
+
+        // Change to the specified directory if one has been configured.
+        // Note this intentionally happens AFTER we have created the output file.
+        self.chdir.perform()?;
+
+        // TODO(tarcieri): configurable chunk size (default parameter)
+        let mut builder = Builder::new(archive, symmetric_key, Default::default())?;
 
         for path in &self.files {
-            let mut input = OpenOptions::new().read(true).open(path)?;
-
-            // TODO(tarcieri): store filename and other metadata
-            let entry = Entry::default();
-
-            builder.append(entry, &mut input)?;
+            self.add_file(&mut builder, path)?;
         }
 
-        // TODO(tarcieri): write footer (encrypted and non-encrypted portions)
+        builder.finish()?;
+        Ok(())
+    }
 
+    /// Add a file to the given archive
+    fn add_file(&self, builder: &mut Builder<File>, path: &Path) -> Result<(), Error> {
+        let mut file = OpenOptions::new().read(true).open(path)?;
+
+        // TODO(tarcieri): better leverage metadata when adding files (e.g. handle directories)
+        let metadata = file.metadata()?;
+        status_ok!(
+            "Adding",
+            "{} ({})",
+            path.display(),
+            formatter::byte_size(metadata.len())
+        );
+
+        // TODO(tarcieri): store filename and other metadata
+        let entry = Entry::default();
+        builder.append(entry, &mut file)?;
         Ok(())
     }
 }

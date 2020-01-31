@@ -29,7 +29,7 @@ digital signatures) archives of files.
 
 NOTE: `sear` is presently vaporware, so this won't do a whole lot yet.
 
-1. [Install Rust] (1.36+)
+1. [Install Rust] (1.39+)
 2. Run `cargo install sear`
 
 ## File Format
@@ -139,7 +139,7 @@ For more information, please see [CODE_OF_CONDUCT.md].
 
 ## License
 
-Copyright © 2019 iqlusion
+Copyright © 2019-2020 iqlusion
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -167,7 +167,7 @@ without any additional terms or conditions.
 [docs-link]: https://docs.rs/sear/
 [license-image]: https://img.shields.io/badge/license-Apache2.0-blue.svg
 [license-link]: https://github.com/iqlusioninc/sear/blob/develop/LICENSE
-[msrv-image]: https://img.shields.io/badge/rustc-1.36+-blue.svg
+[msrv-image]: https://img.shields.io/badge/rustc-1.39+-blue.svg
 [safety-image]: https://img.shields.io/badge/unsafe-forbidden-success.svg
 [safety-link]: https://github.com/rust-secure-code/safety-dance/
 [build-image]: https://github.com/iqlusioninc/sear/workflows/Rust/badge.svg?branch=develop&event=push

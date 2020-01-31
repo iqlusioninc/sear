@@ -1,4 +1,4 @@
-//! Entries (e.g. files) in archives
+//! Entries (e.g. files) in `.sear` archives
 
 #![allow(clippy::module_inception)]
 

@@ -7,6 +7,7 @@ mod application;
 mod command;
 mod config;
 mod error;
+mod formatter;
 mod op;
 mod prelude;
 

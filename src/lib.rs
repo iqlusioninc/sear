@@ -16,5 +16,6 @@ pub mod builder;
 pub mod crypto;
 pub mod keyring;
 pub mod protos;
+pub mod uuid;
 
 pub use self::{builder::Builder, error::Error, keyring::KeyRing};

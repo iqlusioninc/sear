@@ -2,14 +2,13 @@
 
 use chrono::{DateTime, Utc};
 use std::time::SystemTime;
-use tai64::TAI64N;
 
 include!(concat!(env!("OUT_DIR"), "/sear.timestamp.rs"));
 
 impl From<SystemTime> for Tai64n {
     fn from(time: SystemTime) -> Self {
         Self {
-            value: TAI64N::from(time).to_bytes().as_ref().into(),
+            value: tai64::TAI64N::from(time).to_bytes().as_ref().into(),
         }
     }
 }
@@ -17,7 +16,7 @@ impl From<SystemTime> for Tai64n {
 impl From<DateTime<Utc>> for Tai64n {
     fn from(time: DateTime<Utc>) -> Self {
         Self {
-            value: TAI64N::from(time).to_bytes().as_ref().into(),
+            value: tai64::TAI64N::from(time).to_bytes().as_ref().into(),
         }
     }
 }
@@ -38,7 +37,7 @@ impl Tai64n {
     /// Returns `Some` if the proto parses successfully as a `SystemTime`,
     /// or `None` otherwise
     pub fn to_system_time(&self) -> Option<SystemTime> {
-        TAI64N::from_slice(&self.value)
+        tai64::TAI64N::from_slice(&self.value)
             .map(|t| t.to_system_time())
             .ok()
     }
@@ -53,7 +52,7 @@ impl Tai64n {
     /// Returns `Some` if the proto parses successfully as a `SystemTime`,
     /// or `None` otherwise
     pub fn to_datetime_utc(&self) -> Option<DateTime<Utc>> {
-        TAI64N::from_slice(&self.value)
+        tai64::TAI64N::from_slice(&self.value)
             .map(|t| t.to_datetime_utc())
             .ok()
     }
