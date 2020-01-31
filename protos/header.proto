@@ -1,0 +1,23 @@
+// Header (plaintext) for `.sear` archive files
+
+syntax = "proto3";
+package sear.header;
+
+import "entry.proto";
+import "timestamp.proto";
+
+// Header for .sear archives
+message Header {
+    // Random UUID (i.e. nonce) which uniquely identifies this particular file.
+    // This is also used as the nonce for encryption (indirectly via HKDF).
+    string uuid = 1;
+
+    // Segment size for the segmented AEAD construction used to encrypt the file
+    uint64 chunk_size = 2;
+
+    // Encryption key fingerprint (in CryptoURI format; optional)
+    string encryption_key_fingerprint = 3;
+
+    // Signing public key fingerprint (in CryptoURI format; optional)
+    string signing_key_fingerprint = 4;
+}

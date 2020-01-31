@@ -26,6 +26,9 @@ impl Default for ChunkSize {
 
 /// Segmented AEAD STREAM writer
 pub struct Writer<W: io::Write> {
+    /// Additional associated data
+    aad: Vec<u8>,
+
     /// Internal buffer to fill before writing a chunk
     buffer: Vec<u8>,
 
@@ -47,8 +50,14 @@ pub struct Writer<W: io::Write> {
 
 impl<W: io::Write> Writer<W> {
     /// Create a new STREAM writer
-    pub fn new(io: W, key: symmetric::Key, chunk_size: ChunkSize) -> Self {
-        // TODO(tarcieri): randomize nonce prefix?
+    pub fn new(
+        io: W,
+        key: symmetric::Key,
+        _salt: &[u8],
+        aad: impl Into<Vec<u8>>,
+        chunk_size: ChunkSize,
+    ) -> Self {
+        // TODO(tarcieri): derive unique symmetric key and nonce prefix using HKDF
         let nonce_prefix = Default::default();
 
         // Allocate the buffer with the chunk length + tag overhead,
@@ -59,6 +68,7 @@ impl<W: io::Write> Writer<W> {
         buffer.truncate(chunk_size as usize);
 
         Self {
+            aad: aad.into(),
             buffer,
             buffer_pos: 0,
             chunk_counter: 0,
@@ -70,9 +80,9 @@ impl<W: io::Write> Writer<W> {
 
     /// Encrypt the given input, filling the internal buffer and then
     /// encrypting a fixed-sized chunk using our STREAM writer
-    pub fn encrypt_from_reader(&mut self, mut reader: impl io::Read) -> Result<usize, Error> {
-        // Compute the total length of the input as we go
-        let mut length = 0;
+    pub fn encrypt_reader(&mut self, mut reader: impl io::Read) -> Result<usize, Error> {
+        // Compute the total length of the input plaintext as we go
+        let mut length: usize = 0;
 
         loop {
             if self.buffer_pos == self.chunk_size as usize {
@@ -80,7 +90,9 @@ impl<W: io::Write> Writer<W> {
             }
 
             let nbytes = reader.read(&mut self.buffer[self.buffer_pos..])?;
-            length += nbytes;
+
+            self.buffer_pos = self.buffer_pos.checked_add(nbytes).unwrap();
+            length = length.checked_add(nbytes).unwrap();
 
             if nbytes == 0 {
                 break;
@@ -90,18 +102,69 @@ impl<W: io::Write> Writer<W> {
         Ok(length)
     }
 
+    /// STREAM encrypt the given data and write it to our inner I/O object
+    // TODO(tarcieri): actually impl `io::Write`?
+    pub fn write_all(&mut self, data: impl AsRef<[u8]>) -> Result<usize, Error> {
+        let mut data = data.as_ref();
+        let bytes_written = data.len();
+
+        loop {
+            if self.buffer_pos == self.chunk_size as usize {
+                self.encrypt_chunk()?;
+            }
+
+            let buf_remaining = (self.chunk_size as usize)
+                .checked_sub(self.buffer_pos)
+                .unwrap();
+
+            let nbytes = if data.len() < buf_remaining {
+                data.len()
+            } else {
+                buf_remaining
+            };
+
+            let buf_end = self.buffer_pos.checked_add(nbytes).unwrap();
+            self.buffer[self.buffer_pos..buf_end].copy_from_slice(&data[..nbytes]);
+            self.buffer_pos = buf_end;
+            data = &data[nbytes..];
+
+            if data.is_empty() {
+                break;
+            }
+        }
+
+        Ok(bytes_written)
+    }
+
+    /// Encrypt and write out any remaining data in the internal buffer with
+    /// the last block flag set and return the inner I/O object
+    pub fn finish(mut self) -> Result<W, Error> {
+        if self.chunk_counter == 0 && self.buffer_pos == 0 {
+            // In this case nothing was ever written to the STREAM
+            return Ok(self.io);
+        }
+
+        // We always lazily encrypt, so otherwise the buffer should never be empty
+        assert_ne!(self.buffer_pos, 0, "unexpected empty buffer");
+
+        // Otherwise encrypt the remaining data in the buffer as the last block
+        self.buffer.truncate(self.buffer_pos);
+        self.encryptor
+            .encrypt_in_place(self.chunk_counter, true, &self.aad, &mut self.buffer)?;
+        self.io.write_all(&self.buffer)?;
+
+        Ok(self.io)
+    }
+
     /// Encrypt a chunk currently in the buffer, then clear the buffer
     fn encrypt_chunk(&mut self) -> Result<(), Error> {
         debug_assert_eq!(
             self.buffer_pos, self.chunk_size as usize,
-            "buffer not full!"
+            "attempted to encrypt buffer when it isn't full!"
         );
 
-        // TODO(tarcieri): support for customizing AAD?
-        let aad = b"";
-
         self.encryptor
-            .encrypt_in_place(self.chunk_counter, false, aad, &mut self.buffer)?;
+            .encrypt_in_place(self.chunk_counter, false, &self.aad, &mut self.buffer)?;
 
         self.chunk_counter = self
             .chunk_counter

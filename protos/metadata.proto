@@ -1,44 +1,30 @@
-// File metadata (for files contained within a sear archive)
+// Metadata for files contained within a `.sear` archive
 
 syntax = "proto3";
 package sear.metadata;
 
+import "entry.proto";
 import "timestamp.proto";
 
-// File owner
-message Owner {
-    // Name of the owning user
-    string username = 1;
+// Metadata about how the archive was created (all optional)
+message Metadata {
+    // Index of files contained within the archive
+    Index index = 1;
 
-    // Name of the owning group
-    string groupname = 2;
+    // Date the archive was created
+    sear.timestamp.TAI64N created_at = 2;
 
-    // TODO: support for using UIDs/GIDs instead of names?
+    // User who built the archive
+    string username = 3;
+
+    // Host the archive was built on
+    string host = 4;
 }
 
-// File permissions
-message Permissions {
-    // UNIX mode
-    uint32 mode = 1;
-
-    // POSIX ACLs
-    repeated string posix_acls = 2;
-
-    // SELinux context labels
-    repeated string selinux_labels = 3;
+// Index of entries contained in an archive.
+// Stored encrypted, typically in the footer of the archive.
+message Index {
+    // Entries (e.g. files) within the archive
+    repeated sear.entry.Entry entries = 1;
 }
 
-// File attributes
-message Attributes {
-    // Date when the file was created
-    sear.timestamp.TAI64N created_at = 1;
-
-    // Date when the file was last modified
-    sear.timestamp.TAI64N modified_at = 2;
-
-    // Media type (a.k.a. MIME type)
-    string content_type = 3;
-
-    // Extended attributes
-    repeated string xattr = 4;
-}
