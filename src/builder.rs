@@ -5,12 +5,13 @@ use crate::{
         stream::{self, writer::ChunkSize},
         symmetric,
     },
+    entry::Entry,
     error::{Error, ErrorKind},
-    protos::{Entry, Footer, Header, Index, MessageExt, Metadata, Tai64n},
+    protos::{Footer, Header, Index, MessageExt, Metadata, Tai64n},
     uuid,
 };
 use anomaly::{ensure, fail};
-use std::io;
+use std::{convert::TryInto, io};
 
 /// File signature found at the beginning of sear archives which identifies
 /// the format.
@@ -94,9 +95,15 @@ impl<W: io::Write> Builder<W> {
 
     /// Finish writing the archive, adding the index and footer
     pub fn finish(mut self) -> Result<(), Error> {
+        let mut index = Index { entries: vec![] };
+
+        for entry in self.entries.into_iter() {
+            index.entries.push(entry.try_into()?);
+        }
+
         // TODO(tarcieri): support metadata located in the header instead of the footer
         let metadata = Metadata {
-            index: Some(Index::from(self.entries)),
+            index: Some(index),
             created_at: Some(Tai64n::now()),
             username: "".to_owned(),
             host: "".to_owned(),

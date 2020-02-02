@@ -4,4 +4,4 @@
 
 include!(concat!(env!("OUT_DIR"), "/sear.entry.rs"));
 
-pub use self::entry::Kind;
+pub use self::entry::{Kind, Owner};
