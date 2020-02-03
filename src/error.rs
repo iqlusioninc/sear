@@ -38,6 +38,10 @@ pub enum ErrorKind {
     /// Error parsing data
     #[error("parse error")]
     Parse,
+
+    /// Invalid paths
+    #[error("path error")]
+    Path,
 }
 
 impl ErrorKind {
@@ -88,6 +92,12 @@ impl From<cryptouri::Error> for Error {
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Self {
         ErrorKind::Io.context(err).into()
+    }
+}
+
+impl From<mime::FromStrError> for Error {
+    fn from(err: mime::FromStrError) -> Self {
+        ErrorKind::Parse.context(err).into()
     }
 }
 

@@ -13,60 +13,34 @@ message Entry {
     // Length of the file in bytes
     uint64 length = 2;
 
-    // File owner
-    Owner owner = 3;
+    // File attributes
+    Attributes attributes = 3;
 
     // File permissions
     Permissions permissions = 4;
 
-    // File attributes
-    Attributes attributes = 5;
+    // File owner
+    oneof owner {
+        // UID/GID
+        OwnerId id = 10;
+
+        // Username/Groupname
+        OwnerName name = 11;
+
+        // No owner information included
+        OwnerUnspecified unspecified = 12;
+    }
 
     // Kinds of entries
     oneof kind {
         // Regular files
-        FileEntry file = 10;
+        FileEntry file = 20;
 
         // Hard or symbolic links
-        LinkEntry link = 11;
+        LinkEntry link = 21;
 
-        // TODO: character devices, block devices, directories, FIFOs, etc.
+        // TODO(tarcieri): character devices, block devices, directories, FIFOs, etc.
     }
-}
-
-// Regular file
-message FileEntry {}
-
-// Hard or symbolic link
-message LinkEntry {
-    // Is this a symbolic link? (otherwise a hard link)
-    bool symbolic = 1;
-
-    // Path to linked file/directory
-    string link_path = 2;
-}
-
-// File owner
-message Owner {
-    // Name of the owning user
-    string username = 1;
-
-    // Name of the owning group
-    string groupname = 2;
-
-    // TODO: support for using UIDs/GIDs instead of names?
-}
-
-// File permissions
-message Permissions {
-    // UNIX mode
-    uint32 mode = 1;
-
-    // POSIX ACLs
-    repeated string posix_acls = 2;
-
-    // SELinux context labels
-    repeated string selinux_labels = 3;
 }
 
 // File attributes
@@ -82,4 +56,49 @@ message Attributes {
 
     // Extended attributes
     repeated string xattr = 4;
+}
+
+// File permissions
+message Permissions {
+    // UNIX mode
+    uint32 mode = 1;
+
+    // POSIX ACLs
+    repeated string posix_acls = 2;
+
+    // SELinux file labels
+    repeated string selinux_labels = 3;
+}
+
+// File owner (UID/GID)
+message OwnerId {
+    // UID of the owning user
+    uint32 uid = 1;
+
+    /// GID of the owning user
+    uint32 gid = 2;
+}
+
+// File owner (username/groupname)
+message OwnerName {
+    // Name of the owning user
+    string username = 1;
+
+    // Name of the owning group
+    string groupname = 2;
+}
+
+// File owner is deliberately unspecified
+message OwnerUnspecified {}
+
+// Regular file
+message FileEntry {}
+
+// Hard or symbolic link
+message LinkEntry {
+    // Is this a symbolic link? (otherwise a hard link)
+    bool symbolic = 1;
+
+    // Path to linked file/directory
+    string target = 2;
 }

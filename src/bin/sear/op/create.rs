@@ -4,10 +4,9 @@ use super::chdir::Chdir;
 use crate::{
     command::SearCmd,
     error::{Error, ErrorKind},
-    formatter,
     prelude::*,
 };
-use sear::{protos::Entry, Builder, KeyRing};
+use sear::{Builder, Entry, KeyRing};
 use std::{
     fs::{File, OpenOptions},
     path::{Path, PathBuf},
@@ -100,19 +99,16 @@ impl CreateOp {
 
     /// Add a file to the given archive
     fn add_file(&self, builder: &mut Builder<File>, path: &Path) -> Result<(), Error> {
-        let mut file = OpenOptions::new().read(true).open(path)?;
+        let entry = Entry::for_file(path)?;
 
-        // TODO(tarcieri): better leverage metadata when adding files (e.g. handle directories)
-        let metadata = file.metadata()?;
         status_ok!(
             "Adding",
             "{} ({})",
             path.display(),
-            formatter::byte_size(metadata.len())
+            entry.length_formatted()
         );
 
-        // TODO(tarcieri): store filename and other metadata
-        let entry = Entry::default();
+        let mut file = OpenOptions::new().read(true).open(path)?;
         builder.append(entry, &mut file)?;
         Ok(())
     }

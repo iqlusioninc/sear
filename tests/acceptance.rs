@@ -5,16 +5,24 @@
 #![warn(missing_docs, rust_2018_idioms, unused_qualifications)]
 
 use abscissa_core::testing::prelude::*;
+use once_cell::sync::Lazy;
 use std::fs;
 use tempfile::NamedTempFile;
 
 /// Example files to build a `sear` archive with
 const FIXTURE_FILES: &[&str] = &["bar.txt", "baz.txt", "foo.txt"];
 
+/// Command runner (uses `Lazy` to serialize execution via a mutex)
+pub static RUNNER: Lazy<CmdRunner> = Lazy::new(|| {
+    let mut runner = CmdRunner::default();
+    runner.exclusive();
+    runner
+});
+
 /// Run `sear` while providing no arguments
 #[test]
 fn run_no_args() {
-    let mut runner = CmdRunner::default();
+    let mut runner = RUNNER.clone();
     let cmd = runner.capture_stdout().capture_stderr().run();
 
     // TODO(tarcieri): ensure stderr displays: `neither -c nor -x specified`
@@ -30,7 +38,7 @@ fn test_create() {
 
     let output_path_str = output_path.to_path_buf().to_str().unwrap().to_owned();
 
-    let mut runner = CmdRunner::default();
+    let mut runner = RUNNER.clone();
 
     let cmd = runner
         .args(&[

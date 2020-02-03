@@ -20,11 +20,13 @@ cryptouri = "0.3"
 gumdrop = { version = "0.7", optional = true }
 getrandom = "0.1"
 hkdf = "0.8"
+mime = "0.3"
 prost = "0.6"
 serde = { version = "1", features = ["serde_derive"], optional = true }
 sha2 = "0.8"
 tai64 = { version = "3", features = ["chrono"] }
 thiserror = "1"
+tree_magic = "0.2"
 uuid = { version = "0.8", default-features = false }
 zeroize = "1"
 
@@ -32,6 +34,7 @@ zeroize = "1"
 prost-build = "0.6"
 
 [dev-dependencies]
+once_cell = "1"
 tempfile = "3"
 
 [features]
