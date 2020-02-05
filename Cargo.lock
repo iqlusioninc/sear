@@ -115,6 +115,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "anomaly"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "550632e31568ae1a5f47998c3aa48563030fc49b9ec91913ca337cf64fbc5ccb"
+dependencies = [
+ "backtrace",
+]
+
+[[package]]
 name = "ansi_term"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -310,7 +319,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "628b8531cbcd746cf229179ace71f4fa6437ab3be74410d80470a966e4435b5a"
 dependencies = [
- "anomaly",
+ "anomaly 0.1.2",
  "secrecy",
  "subtle-encoding",
  "thiserror",
@@ -908,7 +917,7 @@ dependencies = [
  "abscissa_core",
  "aead",
  "aes-gcm",
- "anomaly",
+ "anomaly 0.2.0",
  "bytes",
  "chacha20poly1305",
  "chrono",
