@@ -2,8 +2,8 @@
 
 use crate::{
     crypto::{
+        kdf,
         stream::{self, writer::ChunkSize},
-        symmetric,
     },
     entry::Entry,
     error::{Error, ErrorKind},
@@ -34,12 +34,16 @@ pub struct Builder<W: io::Write> {
 
 impl<W: io::Write> Builder<W> {
     /// Create a new archive builder wrapping the given writer
-    pub fn new(mut writer: W, key: symmetric::Key, chunk_size: ChunkSize) -> Result<Self, Error> {
-        // Write 6-byte sear archive magic
-        writer.write_all(MAGIC_BYTES)?;
-
+    pub fn new(mut writer: W, key: &kdf::Key, chunk_size: ChunkSize) -> Result<Self, Error> {
         // Generate random UUID identifying this archive
         let uuid = uuid::new_v4().to_string();
+
+        // Derive a unique symmetric encryption key for this file from the
+        // root key and the random UUID as a "nonce"
+        let derived_key = key.derive_symmetric_key(&uuid);
+
+        // Write 6-byte sear archive magic identifier
+        writer.write_all(MAGIC_BYTES)?;
 
         let header = Header {
             uuid: pad_with_newlines(&uuid),
@@ -62,8 +66,13 @@ impl<W: io::Write> Builder<W> {
         // Write serialized `sear.header.Header` proto
         writer.write_all(&header)?;
 
-        let stream_writer =
-            stream::Writer::new(writer, key, uuid.as_bytes(), compute_aad(), chunk_size);
+        let stream_writer = stream::Writer::new(
+            writer,
+            derived_key,
+            uuid.as_bytes(),
+            compute_aad(),
+            chunk_size,
+        );
 
         Ok(Self {
             entries: vec![],
