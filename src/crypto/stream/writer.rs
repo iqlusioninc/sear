@@ -57,7 +57,7 @@ impl<W: io::Write> Writer<W> {
         aad: impl Into<Vec<u8>>,
         chunk_size: ChunkSize,
     ) -> Self {
-        // TODO(tarcieri): derive unique symmetric key and nonce prefix using HKDF
+        // TODO(tarcieri): use randomized or derived (e.g. via HKDF) nonce?
         let nonce_prefix = Default::default();
 
         // Allocate the buffer with the chunk length + tag overhead,

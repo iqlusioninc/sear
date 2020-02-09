@@ -1,24 +1,17 @@
 //! Key ring for encryption, signing, and verification keys
 
 use crate::{
-    crypto::symmetric,
+    crypto::kdf,
     error::{Error, ErrorKind},
 };
-use aead::{generic_array::GenericArray, NewAead};
-use aes_gcm::Aes256Gcm;
-use anomaly::{fail, format_err};
-use chacha20poly1305::ChaCha20Poly1305;
-use cryptouri::{
-    secret_key::{ExposeSecret, SecretKey},
-    CryptoUri,
-};
+use anomaly::format_err;
 use std::{fs, io, path::Path};
 use zeroize::Zeroizing;
 
 /// Key ring
 #[derive(Debug, Default)]
 pub struct KeyRing {
-    symmetric_keys: Vec<symmetric::Key>,
+    symmetric_keys: Vec<kdf::Key>,
 }
 
 impl KeyRing {
@@ -28,7 +21,7 @@ impl KeyRing {
     }
 
     /// Add a symmetric key to the keyring
-    pub fn add_symmetric_key(&mut self, key: symmetric::Key) {
+    pub fn add_symmetric_key(&mut self, key: kdf::Key) {
         self.symmetric_keys.push(key);
     }
 
@@ -36,7 +29,7 @@ impl KeyRing {
     pub fn load_symmetric_key(&mut self, path: impl AsRef<Path>) -> Result<(), Error> {
         let path = path.as_ref();
 
-        let key_str = Zeroizing::new(fs::read_to_string(path).map_err(|e| {
+        let key_uri = Zeroizing::new(fs::read_to_string(path).map_err(|e| {
             if e.kind() == io::ErrorKind::NotFound {
                 format_err!(ErrorKind::FileNotFound, "{}", path.display()).into()
             } else {
@@ -44,30 +37,21 @@ impl KeyRing {
             }
         })?);
 
-        let key_uri = CryptoUri::parse_uri(key_str.trim_end())?;
-
-        let secret_key = key_uri
-            .secret_key()
-            .ok_or_else(|| format_err!(ErrorKind::Parse, "expected a crypto::sec::key"))?;
-
-        let symmetric_key = match secret_key {
-            SecretKey::Aes256Gcm(key) => {
-                let key = GenericArray::clone_from_slice(key.expose_secret());
-                symmetric::Key::Aes256Gcm(Box::new(Aes256Gcm::new(key)))
-            }
-            SecretKey::ChaCha20Poly1305(key) => {
-                let key = GenericArray::clone_from_slice(key.expose_secret());
-                symmetric::Key::ChaCha20Poly1305(Box::new(ChaCha20Poly1305::new(key)))
-            }
-            _ => fail!(ErrorKind::Parse, "expected a crypto::sec::key::aes256gcm"),
-        };
+        let symmetric_key = kdf::Key::parse_uri(key_uri.trim_end()).map_err(|e| {
+            format_err!(
+                ErrorKind::Parse,
+                "error loading key from {}: {}",
+                path.display(),
+                e
+            )
+        })?;
 
         self.add_symmetric_key(symmetric_key);
         Ok(())
     }
 
     /// Return the currently active encryption key if one is available
-    pub fn symmetric_key(&self) -> Option<&symmetric::Key> {
+    pub fn symmetric_key(&self) -> Option<&kdf::Key> {
         // TODO(tarcieri): support for more than one key in the keyring
         match self.symmetric_keys.len() {
             0 => None,

@@ -71,14 +71,10 @@ impl CreateOp {
         assert!(!self.preserve_pathnames, "-P option unsupported");
         assert!(!self.preserve_permissions, "-p option unsupported");
 
-        let symmetric_key = self
-            .keyring
-            .symmetric_key()
-            .unwrap_or_else(|| {
-                status_err!("no symmetric key selected (use -K flag)");
-                exit(1);
-            })
-            .clone();
+        let symmetric_key = self.keyring.symmetric_key().unwrap_or_else(|| {
+            status_err!("no symmetric key selected (use -K flag)");
+            exit(1);
+        });
 
         let archive = File::create(&self.archive)?;
 

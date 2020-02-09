@@ -43,8 +43,8 @@ impl Key {
 impl Debug for Key {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
         f.write_str(match self {
-            Key::Aes256Gcm(_) => "Key::Aes256Gcm {{ .. }}",
-            Key::ChaCha20Poly1305(_) => "Key::ChaCha20Poly1305 {{ .. }}",
+            Key::Aes256Gcm(_) => "symmetric::Key::Aes256Gcm {{ .. }}",
+            Key::ChaCha20Poly1305(_) => "symmetric::Key::ChaCha20Poly1305 {{ .. }}",
         })
     }
 }
