@@ -1,4 +1,4 @@
-//! `sear`: Signed / Encrypted ARchive
+//! ![sear](https://raw.githubusercontent.com/iqlusioninc/sear/develop/img/sear-logo.png)
 //!
 //! This module contains the library components of `sear`.
 //!
