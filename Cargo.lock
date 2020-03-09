@@ -64,12 +64,13 @@ dependencies = [
 
 [[package]]
 name = "aes-gcm"
-version = "0.3.2"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "54e6fb62c3640759142eb73015f57eece23832fde0a7ccd8be17d7ccbd01f21c"
+checksum = "5cfe3c2bd0624e9488c8711bd7f3cc5689fac9427622a98694a15b7b58f54fa8"
 dependencies = [
  "aead",
  "aes",
+ "block-cipher-trait",
  "ghash",
  "subtle 2.2.2",
  "zeroize",
