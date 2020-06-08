@@ -56,10 +56,10 @@ impl Key {
 
         match self.0.derived_alg() {
             Some(secret_key::Algorithm::Aes256Gcm) => {
-                symmetric::Key::Aes256Gcm(Box::new(Aes256Gcm::new(derived_key)))
+                symmetric::Key::Aes256Gcm(Box::new(Aes256Gcm::new(&derived_key)))
             }
             Some(secret_key::Algorithm::ChaCha20Poly1305) => {
-                symmetric::Key::ChaCha20Poly1305(Box::new(ChaCha20Poly1305::new(derived_key)))
+                symmetric::Key::ChaCha20Poly1305(Box::new(ChaCha20Poly1305::new(&derived_key)))
             }
             _ => unreachable!(), // Checked above in `Key::parse_uri`
         }

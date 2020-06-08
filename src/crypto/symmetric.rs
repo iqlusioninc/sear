@@ -1,7 +1,7 @@
 //! Symmetric cryptography support
 
 use crate::error::{Error, ErrorKind};
-use aead::{generic_array::GenericArray, Aead, Buffer};
+use aead::{generic_array::GenericArray, AeadInPlace, Buffer};
 use aes_gcm::Aes256Gcm;
 use chacha20poly1305::ChaCha20Poly1305;
 use std::fmt::{self, Debug};
