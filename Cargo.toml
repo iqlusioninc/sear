@@ -23,7 +23,7 @@ hkdf = "0.8"
 mime = "0.3"
 prost = "0.6"
 serde = { version = "1", features = ["serde_derive"], optional = true }
-sha2 = "0.8"
+sha2 = "0.9"
 tai64 = { version = "3", features = ["chrono"] }
 thiserror = "1"
 tree_magic = "0.2"
