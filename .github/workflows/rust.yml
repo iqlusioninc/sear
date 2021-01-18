@@ -17,7 +17,7 @@ jobs:
           - macos-latest
           - windows-latest
         toolchain:
-          - 1.49.0
+          - 1.49.0 #MSRV
           - stable
     runs-on: ${{ matrix.platform }}
     steps:
@@ -65,7 +65,7 @@ jobs:
           - macos-latest
           - windows-latest # TODO: troubleshoot Windows build
         toolchain:
-          - 1.49.0
+          - 1.49.0 #MSRV
           - stable
     runs-on: ubuntu-latest
     steps:
