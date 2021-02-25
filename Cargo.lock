@@ -69,6 +69,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "aead"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8aeaececfd937b9762778f2aca063ad24fdc827c48c07aeae36fb20c03afa11a"
+dependencies = [
+ "generic-array",
+]
+
+[[package]]
 name = "aes"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -85,7 +94,7 @@ version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5278b5fabbb9bd46e24aa69b2fdea62c99088e0a950a9be40e3e0101298f88da"
 dependencies = [
- "aead",
+ "aead 0.3.2",
  "aes",
  "cipher",
  "ctr",
@@ -238,7 +247,7 @@ version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af1fc18e6d90c40164bf6c317476f2a98f04661e310e79830366b7e914c58a8e"
 dependencies = [
- "aead",
+ "aead 0.3.2",
  "chacha20",
  "cipher",
  "poly1305",
@@ -910,7 +919,7 @@ name = "sear"
 version = "0.0.0"
 dependencies = [
  "abscissa_core",
- "aead",
+ "aead 0.4.0",
  "aes-gcm",
  "anomaly",
  "bytes",
