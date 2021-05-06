@@ -10,16 +10,16 @@ edition     = "2018"
 
 [dependencies]
 abscissa_core = { version = "0.5.2", optional = true }
-aead = "0.3"
-aes-gcm = "0.8"
+aead = "0.4"
+aes-gcm = "0.9"
 anomaly = "0.2"
 bytes = "1"
-chacha20poly1305 = "0.7"
+chacha20poly1305 = "0.8"
 chrono = "0.4"
 cryptouri = "0.4"
 gumdrop = { version = "0.7", optional = true }
 getrandom = "0.2"
-hkdf = "0.10.0"
+hkdf = "0.11"
 mime = "0.3"
 prost = "0.7"
 serde = { version = "1", features = ["serde_derive"], optional = true }
