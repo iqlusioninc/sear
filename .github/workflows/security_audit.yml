@@ -39,7 +39,5 @@ jobs:
         run: cargo install cargo-audit
 
       - name: Run cargo audit
-        uses: actions-rs/cargo@v1
-        with:
-          command: audit
-          args: --deny-warnings
+        run: cargo audit --deny warnings
+
