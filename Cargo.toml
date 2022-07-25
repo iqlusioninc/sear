@@ -10,7 +10,7 @@ edition     = "2018"
 
 [dependencies]
 abscissa_core = { version = "0.5.2", optional = true }
-aead = "0.4"
+aead = "0.5"
 aes-gcm = "0.9"
 anomaly = "0.2"
 bytes = "1"
